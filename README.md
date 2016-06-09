@@ -1,4 +1,4 @@
-## Debian Preseed Iso creation script
+## Debian Preseed Integrator script
 
 Integrates preseed configs for both legacy as EFI installs into the latest stable Debian netinstall ISO (including firmware for certain NICs) to automate your installs.
 
