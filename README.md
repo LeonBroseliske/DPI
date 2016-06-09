@@ -24,11 +24,11 @@ Now run the script again and it will integrate those configs into the new ISO th
 
 ## Using the ISO to start an automated install
 
-# Starting the install from BIOS/Legacy mode
+### Starting the install from BIOS/Legacy mode
 * Boot the image
 * Select 'Automatic Preseed Install'
 
-# Starting the install from EFI mode
+### Starting the install from EFI mode
 * Boot the image
 * Select 'Advanced'
 * Select 'Automated Install'
