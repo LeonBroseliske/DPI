@@ -1,0 +1,81 @@
+d-i debian-installer/language string en
+d-i debian-installer/country string NL
+d-i debian-installer/locale select en_US.UTF-8
+d-i console-keymaps-at/keymap select us
+d-i keyboard-configuration/xkb-keymap select us
+
+d-i clock-setup/utc boolean true
+d-i time/zone string Europe/Amsterdam
+d-i clock-setup/ntp boolean false
+
+# Allow non-free firmware
+d-i hw-detect/load_firmware boolean true
+
+d-i netcfg/choose_interface select auto
+d-i netcfg/dhcp_options select Retry network autoconfiguration
+d-i netcfg/link_wait_timeout string 30
+d-i netcfg/dhcp_timeout string 90
+d-i netcfg/dhcpv6_timeout string 90
+d-i netcfg/dhcp_hostname string debian-install
+
+d-i mirror/country string manual
+d-i mirror/http/hostname string ftp.nl.debian.org
+d-i mirror/http/directory string /debian
+d-i mirror/http/proxy string
+
+d-i mirror/suite string jessie
+d-i mirror/udeb/suite string jessie
+
+d-i partman-auto/method string regular
+d-i partman-md/confirm boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm_nooverwrite boolean false
+d-i partman-auto/expert_recipe string	\
+	root ::				\
+	5000 10000 -1 ext4		\
+		$primary{ }		\
+		$bootable{ }		\
+		method{ format }	\
+		format{ }		\
+		use_filesystem{ }	\
+		filesystem{ ext4 }	\
+		mountpoint{ / }		\
+	.				\
+	4096 6144 8192 linux-swap	\
+		$primary{ }		\
+		method{ swap }		\
+		format{ }		\
+	.
+
+d-i partman/choose_partition select Finish partitioning and write changes to disk
+d-i partman/confirm boolean true
+d-i partman-partitioning/confirm_copy boolean true
+
+### Account setup
+d-i passwd/make-user boolean false
+d-i passwd/root-login boolean true
+
+# Use this to create the hash for the root user: mkpasswd -m sha-512
+d-i passwd/root-password-crypted password <your_password_hash>
+
+### Apt setup.
+d-i debian-installer/allow_unauthenticated string true
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
+d-i apt-setup/security_host string ftp.nl.debian.org/debian-security
+d-i apt-setup/volatile_host string ftp.nl.debian.org/debian
+tasksel tasksel/first multiselect minimal
+d-i pkgsel/include string ssh openssh-server vim psmisc strace lsof ifenslave rsync nfs-common lsb-release python firmware-bnx2 joe
+d-i pkgsel/upgrade select full-upgrade
+
+# This is fairly safe to set, it makes grub install automatically to the MBR
+# if no other operating system is detected on the machine.
+d-i grub-installer/bootdev string default
+d-i grub-installer/only_debian boolean true
+
+popularity-contest popularity-contest/participate boolean false
+
+d-i finish-install/reboot_in_progress note
+
+d-i	preseed/late_command	string	\
+	in-target sed -i 's/PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config
