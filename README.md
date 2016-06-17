@@ -1,6 +1,6 @@
 ## Debian Preseed Integrator script
 
-Integrates preseed configs for both legacy as EFI installs into the latest stable Debian netinstall ISO (including firmware for certain NICs) to automate your installs.
+Integrates preseed configs for both legacy as EFI installs and downloads the latest stable Debian netinstall ISO (including firmware for certain NICs) to automate your installs.
 
 Tested on Debian Jessie and on Ubuntu LTS.
 
@@ -15,6 +15,8 @@ https://www.debian.org/releases/jessie/amd64/apb.html.en
 By default the script uses /var/local/dpi as the working dir, this can be changed in the 'settings' section.
 
 The initial run of the script creates the different subdirs the script uses and then exits on the missing preseed.cfg.
+
+Every run it will check the latest netinst ISO version and will download it when it's not there yet.
 
 * Copy your legacy install preseed config to preseed/preseed.cfg
 * Copy your EFI install preseed config to preseed/preseed-efi.cfg
